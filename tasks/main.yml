@@ -1,0 +1,15 @@
+---
+
+- name: Copy database dump files
+  template:
+    src: "{{playbook_dir}}/../sql/{{item}}"
+    dest: /tmp
+  with_items:
+    - "{{mysql_scripts}}"
+
+- name: Import database dump files
+  mysql_db:
+    state: import
+    name: all
+    target: /tmp/{{ item }}
+  with_items: "{{mysql_scripts}}"
