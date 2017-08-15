@@ -1,15 +1,39 @@
 ---
 
-- name: Copy database dump files
-  template:
-    src: "{{playbook_dir}}/../sql/{{item}}"
-    dest: /tmp
-  with_items:
-    - "{{mysql_scripts}}"
+- name: Create .ssh directory
+  file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
 
-- name: Import database dump files
+- name: Install SSH Private Key
+  copy:
+    owner: root
+    group: root
+    dest: /root/.ssh/id_rsa
+    mode: 0600
+    content: "{{ init_repo_key_private }}"
+
+- name: Install SSH Public Key
+  copy:
+    owner: root
+    group: root
+    dest: /root/.ssh/id_rsa.pub
+    mode: 0600
+    content: "{{ init_repo_key_public }}"
+
+- name: Checkout repository
+  git:
+    repo: "{{ repository }}"
+    dest: "{{ checkout_path }}"
+    accept_hostkey: yes
+    key_file: /root/.ssh/id_rsa
+
+- name: Import database dump files from Platform Init repository
   mysql_db:
     state: import
     name: all
-    target: /tmp/{{ item }}
+    target: "{{ checkout_path }}/SQL/{{ item }}"
   with_items: "{{mysql_scripts}}"
