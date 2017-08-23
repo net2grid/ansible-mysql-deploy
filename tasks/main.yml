@@ -1,29 +1,5 @@
 ---
 
-- name: Create .ssh directory
-  file:
-    path: /root/.ssh
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-
-- name: Install SSH Private Key
-  copy:
-    owner: root
-    group: root
-    dest: /root/.ssh/id_rsa
-    mode: 0600
-    content: "{{ init_repo_key_private }}"
-
-- name: Install SSH Public Key
-  copy:
-    owner: root
-    group: root
-    dest: /root/.ssh/id_rsa.pub
-    mode: 0600
-    content: "{{ init_repo_key_public }}"
-
 - name: Checkout repository
   git:
     repo: "{{ repository }}"
