@@ -7,7 +7,7 @@
     accept_hostkey: yes
     key_file: /root/.ssh/id_rsa
 
-- name: Import database dump files from Platform Init repository
+- name: Import DB dump from Platform Init repository
   mysql_db:
     state: import
     name: all
