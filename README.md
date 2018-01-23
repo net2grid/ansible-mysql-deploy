@@ -21,10 +21,16 @@ None.
 
 *Inside `vars/mysql-scripts.yml`*:
 
-    mysql_scripts:
-      - file1.sql
-      - file2.sql
-
+	mysql_scripts:
+	  - script1.sql
+	  - script2.sql
+	
+	mysql_scripts_repository:
+	  url: "git@github.com:somebody/some-repository.git"
+	  branch: "some_branch" 
+	
+	checkout_path: "/some/directory"
+	
 ## License
 
 MIT / BSD

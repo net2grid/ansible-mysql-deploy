@@ -1,11 +1,22 @@
 ---
 
-- name: Checkout repository
+- name: Checkout repository with specified branch
   git:
-    repo: "{{ repository }}"
+    repo: "{{ mysql_scripts_repository.url }}"
+    version: "{{ mysql_scripts_repository.branch | default(HEAD)  }}"
     dest: "{{ checkout_path }}"
     accept_hostkey: yes
     key_file: /root/.ssh/id_rsa
+  when: mysql_scripts_repository is defined
+
+- name: Checkout repository
+  git:
+    repo: "{{ repository }}"
+    version: master
+    dest: "{{ checkout_path }}"
+    accept_hostkey: yes
+    key_file: /root/.ssh/id_rsa
+  when: repository is defined
 
 - name: Import DB dump from Platform Init repository
   mysql_db:
