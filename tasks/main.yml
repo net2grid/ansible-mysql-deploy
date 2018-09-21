@@ -18,6 +18,14 @@
     key_file: /root/.ssh/id_rsa
   when: repository is defined
 
+- name: Copy resultset database script
+  template:
+    src: "resultset_databases.sql.j2"
+    dest: "{{ checkout_path }}/SQL/resultset_databases.sql"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Import DB dump from Platform Init repository
   mysql_db:
     state: import
